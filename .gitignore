@@ -96,3 +96,16 @@ InitTestScene*.unity*
 /[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers.meta
 
 # Auto-generated scenes by play mode tests
+/Assets/InitTestScene*.unity
+
+
+# Ignore everything in Assets
+Assets/*
+
+# Don't ignore C# scripts
+!Assets/**/*.cs
+
+# Ignore audio files specifically
+Assets/**/*.wav
+Assets/**/*.mp3
+Assets/**/*.ogg
