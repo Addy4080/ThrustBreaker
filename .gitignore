@@ -1,18 +1,22 @@
-# Unity general ignores
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
-/[Bb]uild/
-/[Bb]uilds/
-/[Ll]ogs/
-/[Uu]ser[Ss]ettings/
+# This .gitignore file should be placed at the root of your Unity project directory
+#
+# Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
+
+# Unity cache folders
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
 *.log
 
-# Blender backups
+# Blender backup files
 *.blend1
 *.blend1.meta
 
-# Memory captures
+# Memory Captures
 /[Mm]emoryCaptures/
 
 # Recordings
@@ -22,7 +26,7 @@
 /Assets/Plugins/Editor/JetBrains*
 *.DotSettings.user
 
-# Visual Studio / IDE files
+# Visual Studio / VSCode / other IDE
 .vs/
 .gradle/
 ExportedObj/
@@ -42,10 +46,7 @@ ExportedObj/
 *.opendb
 *.VC.db
 
-# Unity generated meta & crash files
-*.pidb.meta
-*.pdb.meta
-*.mdb.meta
+# Unity crash reports
 sysinfo.txt
 mono_crash.*
 
@@ -59,7 +60,7 @@ mono_crash.*
 # Crashlytics
 crashlytics-build.properties
 
-# TestRunner
+# TestRunner auto-generated scenes
 InitTestScene*.unity*
 
 # Addressables
@@ -81,10 +82,5 @@ InitTestScene*.unity*
 # Ignore only ExternalAssets folder
 /Assets/ExternalAssets/
 
-# Track everything else in Assets (scripts, scenes, audio, textures, etc.)
+# Track everything else in Assets
 !/Assets/**
-
-# Optional: ignore specific audio file types if you want
-# Assets/**/*.wav
-# Assets/**/*.mp3
-# Assets/**/*.ogg
