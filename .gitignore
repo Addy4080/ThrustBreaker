@@ -95,10 +95,10 @@ InitTestScene*.unity*
 /Assets/InitTestScene*.unity
 
 # Ignore only specific folders in Assets
-/Assets/GameDevTV Assets/
-/Assets/Prefabs/
-/Assets/Particles/
-/Assets/Whaleride/
+/Assets/GameDevTV Assets
+/Assets/Prefabs
+/Assets/Particles
+/Assets/Whaleride
 
 # Track everything else in Assets (including audio).
 !/Assets/**
