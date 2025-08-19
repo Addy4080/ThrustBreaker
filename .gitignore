@@ -100,5 +100,5 @@ InitTestScene*.unity*
 /Assets/Particles/
 /Assets/Whaleride/
 
-# Track everything else in Assets (including audio)
+# Track everything else in Assets (including audio).
 !/Assets/**
