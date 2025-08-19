@@ -81,6 +81,3 @@ InitTestScene*.unity*
 
 # Ignore only ExternalAssets folder
 /Assets/ExternalAssets/
-
-# Track everything else in Assets
-!/Assets/**
