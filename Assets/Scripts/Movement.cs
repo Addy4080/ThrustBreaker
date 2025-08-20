@@ -9,8 +9,15 @@ public class Movement : MonoBehaviour
     [SerializeField] InputAction Rotation;
     [SerializeField] float thrustStrength;
     [SerializeField] float rotationStrengh;
+
     Rigidbody rb;
     AudioSource audioSource;
+
+    public bool isFrozen = false;
+
+    [SerializeField] AudioClip shieldBurstSound;       // renamed from bubbleBurstSound
+    [SerializeField] AudioClip rocketThrustSound;
+    [SerializeField] AudioClip shieldActivatedSound;   // renamed from bubbleActivatedSound
 
     void Start()
     {
@@ -26,6 +33,7 @@ public class Movement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isFrozen) return;
         ProcessThrust();
         ProcessRotation();
     }
@@ -35,26 +43,28 @@ public class Movement : MonoBehaviour
         if (Thrust.IsPressed())
         {
             rb.AddRelativeForce(Vector3.up * thrustStrength * Time.fixedDeltaTime);
+
             if (!audioSource.isPlaying)
             {
+                audioSource.clip = rocketThrustSound;
                 audioSource.Play();
             }
         }
         else
         {
-            audioSource.Stop();
+            if (audioSource.isPlaying && audioSource.clip == rocketThrustSound)
+                audioSource.Stop();
         }
     }
 
     private void ProcessRotation()
     {
         float RotationInput = Rotation.ReadValue<float>();
-
         if (RotationInput < 0)
         {
             ApplyRotation(rotationStrengh);
         }
-        else if(RotationInput > 0)
+        else if (RotationInput > 0)
         {
             ApplyRotation(-rotationStrengh);
         }
@@ -65,5 +75,31 @@ public class Movement : MonoBehaviour
         rb.freezeRotation = true;
         transform.Rotate(Vector3.forward * rotationStrength * Time.fixedDeltaTime);
         rb.freezeRotation = false;
+    }
+
+    public void FreezeControls(float duration)
+    {
+        isFrozen = true;
+        audioSource.Stop();
+
+        if (shieldBurstSound != null)
+        {
+            audioSource.PlayOneShot(shieldBurstSound);
+        }
+
+        Invoke(nameof(UnfreezeControls), duration);
+    }
+
+    private void UnfreezeControls()
+    {
+        isFrozen = false;
+    }
+
+    public void PlayShieldActivatedSound()
+    {
+        if (shieldActivatedSound != null)
+        {
+            audioSource.PlayOneShot(shieldActivatedSound);
+        }
     }
 }
