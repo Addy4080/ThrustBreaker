@@ -51,46 +51,44 @@ public class CollisionHandeler : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        if (!isControllable || !isCollidable) { return; }
+         if (!isControllable || !isCollidable) { return; }
 
-        if (hasShield && other.gameObject.tag != "Friendly" && other.gameObject.tag != "Finish" && other.gameObject.tag != "Shield")
-        {
-            Debug.Log("Shield absorbed the hit!");
+    if (hasShield && other.gameObject.tag != "Friendly" && other.gameObject.tag != "Finish" && other.gameObject.tag != "Shield")
+    {
+        Debug.Log("Shield absorbed the hit!");
 
-            // Turn off shield
-            hasShield = false;
-            shieldVisuals.SetActive(false);
+        // Turn off shield
+        hasShield = false;
+        shieldVisuals.SetActive(false);
 
-            // Start invincibility (FIX: will now end properly)
-            // Start invincibility (ends properly)
-                StartCoroutine(InvincibilityDelay());
+        // Start invincibility (ends properly)
+        StartCoroutine(InvincibilityDelay());
 
-                // --- MINIMAL FIX: bounce only along WORLD X, but choose left/right from LOCAL X ---
-                // Stop current movement
-            rb.velocity = Vector3.zero;          
-            rb.angularVelocity = Vector3.zero;  
+        // --- Bounce only along LOCAL X axis ---
+        rb.constraints = RigidbodyConstraints.None; // allow free motion
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
 
-            // Bounce along local X axis
-            Vector3 bounce = transform.right * shieldBounceForce;
-            rb.AddForce(bounce, ForceMode.Impulse);
+        // Bounce direction: rocket's local X axis (left/right)
+        Vector3 bounceDir = -transform.right; 
+        rb.AddForce(bounceDir * shieldBounceForce, ForceMode.Impulse);
 
-            // Freeze Y/Z movement and all rotation
-            rb.constraints = RigidbodyConstraints.FreezePositionY | 
-                            RigidbodyConstraints.FreezePositionZ | 
-                            RigidbodyConstraints.FreezeRotation;
+        // Restrict velocity to local X axis only
+        Vector3 localVel = transform.InverseTransformDirection(rb.linearVelocity);
+        localVel.y = 0f; // kill Y
+        localVel.z = 0f; // kill Z
+        rb.linearVelocity = transform.TransformDirection(localVel);
 
+        // Disable player control
+        isControllable = false;
+        if (movementScript != null) movementScript.FreezeControls(freezeDuration);
 
-                // Disable player control
-                isControllable = false;
-                if (movementScript != null) movementScript.FreezeControls(freezeDuration);
+        // Camera shake
+        StartCoroutine(CameraShake(0.2f, 0.1f));
 
-                // Camera shake
-                StartCoroutine(CameraShake(0.2f, 0.1f));
-
-                // Restore after short delay
-                StartCoroutine(RestoreControl());
-                return;
-
+        // Restore after short delay
+        StartCoroutine(RestoreControl());
+        return;
         }
 
         switch (other.gameObject.tag)
